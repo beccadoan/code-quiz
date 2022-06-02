@@ -1,0 +1,9 @@
+.purple-text {
+    color: purple;
+    text-decoration: none;
+}
+
+.purple-text:hover {
+    color: purple;
+    text-decoration: none;
+}
