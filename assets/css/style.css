@@ -1,9 +1,55 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 .purple-text {
-    color: purple;
+    color: #231052;
     text-decoration: none;
 }
 
 .purple-text:hover {
-    color: purple;
+    color: #231052;
     text-decoration: none;
 }
+
+.my-fav-div {
+    width: 65%;
+    padding-top: 75px;
+}
+
+.answer-btn {
+    background-color: rgba(35, 16, 82, 1);
+    color: white;
+}
+
+.answer-btn:hover {
+    background-color: rgba(35, 16, 82, .75);
+    color: white
+}
+
+.btn-container {
+    display: block;
+    margin: auto;
+}
+
+li {
+    list-style: none;
+}
+
+.my-fav-div li {
+    padding: 5px;
+}
+
+.final-result {
+    border-top:3px solid grey;
+}
+
+.final-result span {
+    font-size: 30px;
+    font-family: cursive;
+}
+
+
+
