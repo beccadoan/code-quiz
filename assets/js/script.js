@@ -4,9 +4,17 @@ var questionNumber = 0;
 
 // Quiz Questions and Answers
 var quizDate = {
-    questions: ["Question 1", "Question 2", "Question 3", "Question 4"],
-    answers: [["Question 1","Question 1","Question 1","Question 1"],["A1","A2","A3","A4"],["A1","A2","A3","A4"],["A1","A2","A3","A4"]],
-    correctAnswers: [0,4,1,2]
+    questions: ["Commonly used date types DO NOT include",
+     "The condition in an if / else statement is enclosed with _____",
+    "Arrays in JavaScript can be used to store _____",
+    "String values must be enclosed with _____ when being assigned to variables",
+    "A very useful tool used during development and debugging for printing content to the debugger is:"],
+    answers: [["1. strings","2. booleans","3. alerts","4. numbers"],
+    ["1. quotes","2. curly brackets","3. parentheses","4. square brackets"],
+    ["1. numbers and strings","other arrays","booleans","all of the above"],
+    ["1. commas","2. curly brackets","3. quotes","4. parenthesis"],
+    ["1. JavaScript","2. terminal/bash","3. for loops","4. console log"]],
+    correctAnswers: [2,2,3,2,3]
 }
 
 
@@ -25,7 +33,7 @@ var startQuiz = function(){
     var answerDivEl = $("<div></div>").attr("id", "answers-here");
     var answerListGroupEl = $("<ol></ol>")
 
-    for (var i = 0; i < quizDate.questions.length; i++){
+    for (var i = 0; i < quizDate.answers[0].length; i++){
         var answerListEl = $("<li></li>");
         var answerBtnEl = $("<button></button>").attr("id", "answers-here-"+i.toString()).addClass("btn answer-btn");
         $(answerBtnEl).text(quizDate.answers[questionNumber][i]);
@@ -35,11 +43,8 @@ var startQuiz = function(){
     $(answerDivEl).append(answerListGroupEl);
     
     $('#main-content').append(answerDivEl);
-
-   
-
-
-
+    
+    return
 }
 
 
@@ -48,4 +53,9 @@ var startQuiz = function(){
 // when "start quiz" button is clicked
 $("#start-quiz").on("click", function(){
     startQuiz();
+})
+
+// when an answer button is clicked
+$("#answers-here-0").on("click", function(){
+    console.log("clicked")
 })
