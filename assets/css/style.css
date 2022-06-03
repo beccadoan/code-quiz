@@ -22,6 +22,7 @@
 .answer-btn {
     background-color: rgba(35, 16, 82, 1);
     color: white;
+    width: 175px;
 }
 
 .answer-btn:hover {
