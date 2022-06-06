@@ -2,8 +2,11 @@
 // Initialize to first question
 var questionNumber = 0;
 
+var resultsDivEl = $("<div></div>").addClass("final-result");
+var resultSpanEl = $("<span></span>").attr('id',"result-here");
+
 // Quiz Questions and Answers
-var quizDate = {
+var quizData = {
     questions: ["Commonly used date types DO NOT include",
      "The condition in an if / else statement is enclosed with _____",
     "Arrays in JavaScript can be used to store _____",
@@ -19,8 +22,6 @@ var quizDate = {
 
 
 var startQuiz = function(){
-    
-    
     // remove start quiz button
     $("#start-quiz").remove();
 
@@ -28,15 +29,15 @@ var startQuiz = function(){
     $("#quiz-description").remove();
 
     // change text in Header
-    $("#question-here").text("Question 1").removeClass(".text-center")
+    $("#question-here").text(quizData.questions[questionNumber]).removeClass("text-center")
 
     var answerDivEl = $("<div></div>").attr("id", "answers-here");
     var answerListGroupEl = $("<ol></ol>")
 
-    for (var i = 0; i < quizDate.answers[0].length; i++){
+    for (var i = 0; i < quizData.answers[0].length; i++){
         var answerListEl = $("<li></li>");
-        var answerBtnEl = $("<button></button>").attr("id", "answers-here-"+i.toString()).addClass("btn answer-btn");
-        $(answerBtnEl).text(quizDate.answers[questionNumber][i]);
+        var answerBtnEl = $("<button></button>").attr("id", "answer-"+i.toString()).addClass("btn answer-btn");
+        $(answerBtnEl).text(quizData.answers[questionNumber][i]);
         answerListEl.append(answerBtnEl);
         answerListGroupEl.append(answerListEl);
     }
@@ -44,18 +45,46 @@ var startQuiz = function(){
     
     $('#main-content').append(answerDivEl);
     
-    return
+    $("#answers-here").on("click","button", function(){
+        rightOrWrong(this);
+        if (questionNumber<quizData.questions.length-1){
+            nextQuestion();
+        } else {
+            displayResults();
+        }
+    })
+
+    function nextQuestion(){
+        questionNumber++;
+        $("#question-here").text(quizData.questions[questionNumber])
+        for (var i = 0; i < quizData.answers[questionNumber].length; i++){
+            $("#answer-"+i.toString()).text(quizData.answers[questionNumber][i]);
+        }
+    }
+
+    function rightOrWrong(element){
+        if(questionNumber === 0) {
+            
+            resultsDivEl.append(resultSpanEl);
+            $('#main-content').append(resultsDivEl);
+        }
+    
+        if (parseInt($(element).attr('id').replace("answer-","")) === quizData.correctAnswers[questionNumber]){
+            $(resultSpanEl).text("Correct");
+            console.log("correct");
+        } else {
+            $(resultSpanEl).text("Wrong");
+            console.log("wrong");
+        }
+    }
+
+    function displayResults() {
+        console.log("You did so good!!");
+    }
 }
-
-
-
 
 // when "start quiz" button is clicked
 $("#start-quiz").on("click", function(){
     startQuiz();
 })
 
-// when an answer button is clicked
-$("#answers-here-0").on("click", function(){
-    console.log("clicked")
-})
