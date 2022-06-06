@@ -1,9 +1,17 @@
 
 // Initialize to first question
 var questionNumber = 0;
+var timeRemaining = 75000;
 
+var timeRemainingEl = $("#remaining-time")
 var resultsDivEl = $("<div></div>").addClass("final-result");
 var resultSpanEl = $("<span></span>").attr('id',"result-here");
+var startQuizBtnEl = $("#start-quiz");
+var quizDescriptionEl = $("#quiz-description");
+var questionHeaderEl = $("#question-here")
+var mainContentEl = $("#main-content");
+
+
 
 // Quiz Questions and Answers
 var quizData = {
@@ -14,7 +22,7 @@ var quizData = {
     "A very useful tool used during development and debugging for printing content to the debugger is:"],
     answers: [["1. strings","2. booleans","3. alerts","4. numbers"],
     ["1. quotes","2. curly brackets","3. parentheses","4. square brackets"],
-    ["1. numbers and strings","other arrays","booleans","all of the above"],
+    ["1. numbers and strings","2. other arrays","3. booleans","4. all of the above"],
     ["1. commas","2. curly brackets","3. quotes","4. parenthesis"],
     ["1. JavaScript","2. terminal/bash","3. for loops","4. console log"]],
     correctAnswers: [2,2,3,2,3]
@@ -22,14 +30,20 @@ var quizData = {
 
 
 var startQuiz = function(){
+    let myVar = setInterval(myTimer, 1000);
+    
+    function myTimer() {
+        $(timeRemainingEl).text((timeRemaining/1000).toString())
+        timeRemaining-=1000;
+    }
     // remove start quiz button
-    $("#start-quiz").remove();
+    $(startQuizBtnEl).remove();
 
     // remove paragraph element describing quiz
-    $("#quiz-description").remove();
+    $(quizDescriptionEl).remove();
 
     // change text in Header
-    $("#question-here").text(quizData.questions[questionNumber]).removeClass("text-center")
+    $(questionHeaderEl).text(quizData.questions[questionNumber]).removeClass("text-center")
 
     var answerDivEl = $("<div></div>").attr("id", "answers-here");
     var answerListGroupEl = $("<ol></ol>")
@@ -44,6 +58,8 @@ var startQuiz = function(){
     $(answerDivEl).append(answerListGroupEl);
     
     $('#main-content').append(answerDivEl);
+
+    
     
     $("#answers-here").on("click","button", function(){
         rightOrWrong(this);
