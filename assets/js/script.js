@@ -33,6 +33,11 @@ var startQuiz = function(){
     let myVar = setInterval(myTimer, 1000);
     
     function myTimer() {
+        if (timeRemaining <= 0){
+            clearInterval(myVar);
+            $(timeRemainingEl).text("0");
+            displayResults();
+        }
         $(timeRemainingEl).text((timeRemaining/1000).toString())
         timeRemaining-=1000;
     }
@@ -80,17 +85,15 @@ var startQuiz = function(){
 
     function rightOrWrong(element){
         if(questionNumber === 0) {
-            
             resultsDivEl.append(resultSpanEl);
             $('#main-content').append(resultsDivEl);
         }
     
         if (parseInt($(element).attr('id').replace("answer-","")) === quizData.correctAnswers[questionNumber]){
             $(resultSpanEl).text("Correct");
-            console.log("correct");
         } else {
             $(resultSpanEl).text("Wrong");
-            console.log("wrong");
+            timeRemaining-=20000;
         }
     }
 
