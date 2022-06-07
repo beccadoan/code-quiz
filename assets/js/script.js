@@ -3,15 +3,16 @@
 var questionNumber = 0;
 var timeRemaining = 75000;
 
-var timeRemainingEl = $("#remaining-time")
-var resultsDivEl = $("<div></div>").addClass("final-result");
-var resultSpanEl = $("<span></span>").attr('id',"result-here");
+var timeRemainingEl = $("#remaining-time");
+var resultsDivEl = $("#result-div");
+var resultSpanEl = $("#result-here");
 var startQuizBtnEl = $("#start-quiz");
 var quizDescriptionEl = $("#quiz-description");
-var questionHeaderEl = $("#question-here")
+var questionHeaderEl = $("#question-here");
 var mainContentEl = $("#main-content");
-
-
+var viewHighScoresEl = $("#view-scores");
+var scoreFormEl = $("#score-form");
+var answerListGroupEl = $("#answers-here")
 
 // Quiz Questions and Answers
 var quizData = {
@@ -30,16 +31,20 @@ var quizData = {
 
 
 var startQuiz = function(){
+    timeRemaining = 75000;
+
     let myVar = setInterval(myTimer, 1000);
     
     function myTimer() {
         if (timeRemaining <= 0){
             clearInterval(myVar);
             $(timeRemainingEl).text("0");
+            timeRemaining = 0;
             displayResults();
+        } else{
+            $(timeRemainingEl).text((timeRemaining/1000).toString())
+            timeRemaining-=1000;
         }
-        $(timeRemainingEl).text((timeRemaining/1000).toString())
-        timeRemaining-=1000;
     }
     // remove start quiz button
     $(startQuizBtnEl).hide();
@@ -50,8 +55,8 @@ var startQuiz = function(){
     // change text in Header
     $(questionHeaderEl).text(quizData.questions[questionNumber]).removeClass("text-center")
 
-    var answerDivEl = $("<div></div>").attr("id", "answers-here");
-    var answerListGroupEl = $("<ol></ol>")
+    // var answerDivEl = $("<div></div>").attr("id", "answers-here");
+    // var answerListGroupEl = $("<ol></ol>")
 
     for (var i = 0; i < quizData.answers[0].length; i++){
         var answerListEl = $("<li></li>");
@@ -60,9 +65,9 @@ var startQuiz = function(){
         answerListEl.append(answerBtnEl);
         answerListGroupEl.append(answerListEl);
     }
-    $(answerDivEl).append(answerListGroupEl);
+    // $(answerDivEl).append(answerListGroupEl);
     
-    $('#main-content').append(answerDivEl);
+    // $('#main-content').append(answerDivEl);
 
     
     
@@ -85,8 +90,9 @@ var startQuiz = function(){
 
     function rightOrWrong(element){
         if(questionNumber === 0) {
-            resultsDivEl.append(resultSpanEl);
-            $('#main-content').append(resultsDivEl);
+            // resultsDivEl.append(resultSpanEl);
+            // $('#main-content').append(resultsDivEl);
+            resultsDivEl.show();
         }
     
         if (parseInt($(element).attr('id').replace("answer-","")) === quizData.correctAnswers[questionNumber]){
@@ -102,8 +108,16 @@ var startQuiz = function(){
     }
 }
 
+var viewHighScores = function(){
+    console.log("view high scores here");
+}
+
 // when "start quiz" button is clicked
-$("#start-quiz").on("click", function(){
+$(startQuizBtnEl).on("click", function(){
     startQuiz();
+})
+
+$(viewHighScoresEl).on("click", function(){
+    viewHighScores();
 })
 
