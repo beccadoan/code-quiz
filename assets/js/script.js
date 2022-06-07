@@ -42,10 +42,10 @@ var startQuiz = function(){
         timeRemaining-=1000;
     }
     // remove start quiz button
-    $(startQuizBtnEl).remove();
+    $(startQuizBtnEl).hide();
 
     // remove paragraph element describing quiz
-    $(quizDescriptionEl).remove();
+    $(quizDescriptionEl).hide();
 
     // change text in Header
     $(questionHeaderEl).text(quizData.questions[questionNumber]).removeClass("text-center")
