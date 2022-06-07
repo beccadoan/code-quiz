@@ -3,6 +3,7 @@
 var questionNumber = 0;
 var timeRemaining = 75000;
 
+// grab elements from html
 var timeRemainingEl = $("#remaining-time");
 var resultsDivEl = $("#result-div");
 var resultSpanEl = $("#result-here");
@@ -28,61 +29,74 @@ var quizData = {
     ["1. JavaScript","2. terminal/bash","3. for loops","4. console log"]],
     correctAnswers: [2,2,3,2,3]
 }
-
-
+// function begins when 'start quiz' is pressed
 var startQuiz = function(){
+    // initialize remaining time to 75s/ 75000ms
     timeRemaining = 75000;
 
-    let myVar = setInterval(myTimer, 1000);
+    // hide start quiz button
+    $(startQuizBtnEl).hide();
+
+    // hide paragraph element describing quiz
+    $(quizDescriptionEl).hide();
+
+    // uncenter text in Header
+    $(questionHeaderEl).text(quizData.questions[questionNumber]).removeClass("text-center")
+
+    // starts an interval timer: runs the myTimer function every second, which decrements the time by 1
+    let myVar = setInterval(myTimer, 1000); 
     
+    // this function will be run once every second
     function myTimer() {
+
+        // if time reaches 0, stop the interval timer, and set time remaining to 0 in case it goes negative
+        // display results
         if (timeRemaining <= 0){
             clearInterval(myVar);
             $(timeRemainingEl).text("0");
             timeRemaining = 0;
             displayResults();
-        } else{
+        // if time did not reach 0, display time remaining and subtract a second
+        } else {
             $(timeRemainingEl).text((timeRemaining/1000).toString())
             timeRemaining-=1000;
         }
     }
-    // remove start quiz button
-    $(startQuizBtnEl).hide();
-
-    // remove paragraph element describing quiz
-    $(quizDescriptionEl).hide();
-
-    // change text in Header
-    $(questionHeaderEl).text(quizData.questions[questionNumber]).removeClass("text-center")
-
-    // var answerDivEl = $("<div></div>").attr("id", "answers-here");
-    // var answerListGroupEl = $("<ol></ol>")
-
+    
+    // create quiz questions and answers from quiz data element
     for (var i = 0; i < quizData.answers[0].length; i++){
+        // create list element
         var answerListEl = $("<li></li>");
+        // create button element with id of answer-0, answer-1, etc, depending on which answer it is
         var answerBtnEl = $("<button></button>").attr("id", "answer-"+i.toString()).addClass("btn answer-btn");
+        // put the answer in the button
         $(answerBtnEl).text(quizData.answers[questionNumber][i]);
+        // append list item with button
         answerListEl.append(answerBtnEl);
+        // append newest button list item to the original unordered list
         answerListGroupEl.append(answerListEl);
     }
-    // $(answerDivEl).append(answerListGroupEl);
-    
-    // $('#main-content').append(answerDivEl);
-
-    
-    
-    $("#answers-here").on("click","button", function(){
+ 
+    // when user clicks on an answer button
+    $(answerListGroupEl).on("click","button", function(){
+        // display whether it was correct or not
         rightOrWrong(this);
+        // if you aren't on the last question, display the next question
         if (questionNumber<quizData.questions.length-1){
             nextQuestion();
+        // if you are on the last question, display the result
         } else {
             displayResults();
         }
     })
 
     function nextQuestion(){
+        // increment question number
         questionNumber++;
-        $("#question-here").text(quizData.questions[questionNumber])
+
+        // update question to next question
+        $(questionHeaderEl).text(quizData.questions[questionNumber])
+        // update all answer buttons with  new answers
         for (var i = 0; i < quizData.answers[questionNumber].length; i++){
             $("#answer-"+i.toString()).text(quizData.answers[questionNumber][i]);
         }
@@ -90,19 +104,20 @@ var startQuiz = function(){
 
     function rightOrWrong(element){
         if(questionNumber === 0) {
-            // resultsDivEl.append(resultSpanEl);
-            // $('#main-content').append(resultsDivEl);
+            // display element from hidden upon first answer
             resultsDivEl.show();
         }
-    
+        // check the answer element chosen against the correct answer in the quiz date
+        // if it's correct, display 'correct'
         if (parseInt($(element).attr('id').replace("answer-","")) === quizData.correctAnswers[questionNumber]){
             $(resultSpanEl).text("Correct");
+        // if the answer is incorrect, display 'wrong' and subtract 20s from the timer
         } else {
             $(resultSpanEl).text("Wrong");
             timeRemaining-=20000;
         }
     }
-
+    // displays score and let's user input info to save
     function displayResults() {
         console.log("You did so good!!");
     }
