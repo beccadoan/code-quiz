@@ -2,6 +2,8 @@
 // Initialize to first question
 var questionNumber = 0;
 var timeRemaining = 75000;
+var highScores = {};
+
 
 // grab elements from html
 var timeRemainingEl = $("#remaining-time");
@@ -15,6 +17,10 @@ var viewHighScoresEl = $("#view-scores");
 var scoreFormDivEl = $("#score-form-div");
 var answerListGroupEl = $("#answers-here");
 var submitButtonEl = $("#submit-btn");
+var nameInputEl = $("#name-input");
+var highScoreButtonsEl = $("#high-score-buttons");
+var clearScoresBtn = $("#clear-scores");
+
 
 // Quiz Questions and Answers
 var quizData = {
@@ -119,6 +125,7 @@ var startQuiz = function(){
     }
     // displays score and let's user input info to save
     function displayResults() {
+        $(timeRemainingEl).text((timeRemaining/1000).toString())
         $(answerListGroupEl).hide();
         $(scoreFormDivEl).show();
         $(questionHeaderEl).text("All Done!")
@@ -128,9 +135,32 @@ var startQuiz = function(){
     }
 }
 
+var loadScores = function() {
+    highScores = JSON.parse(localStorage.getItem("highScores"));
+  
+    // if nothing in localStorage, create a new object to track all task status arrays
+    if (!highScores) {
+      highScores = {
+        playerName: [],
+        playerScore: []
+      };
+    }
+}
+
+var saveScores = function() {
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+  };
+
 // view the saved high scores
 var viewHighScores = function(){
-    console.log("view high scores here");
+    $(questionHeaderEl).text("High Scores");
+    $(quizDescriptionEl).hide();
+    $(startQuizBtnEl).hide();
+    $(answerListGroupEl).hide();
+    $(resultsDivEl).hide();
+    $(highScoreButtonsEl).show();
+    $(scoreFormDivEl).hide();
+
 }
 
 // when "start quiz" button is clicked
@@ -144,5 +174,14 @@ $(viewHighScoresEl).on("click", function(){
 })
 
 $(submitButtonEl).on("click", function(){
-    console.log("my function logs!");
+    highScores['playerName'].push($(nameInputEl).val());
+    highScores['playerScore'].push((timeRemaining/1000).toString());
+    saveScores();
+    viewHighScores();
 })
+
+$(clearScoresBtn).on("click", function(){
+    localStorage.clear();
+})
+
+loadScores();
