@@ -20,7 +20,9 @@ var submitButtonEl = $("#submit-btn");
 var nameInputEl = $("#name-input");
 var highScoreButtonsEl = $("#high-score-buttons");
 var clearScoresBtn = $("#clear-scores");
-
+var highScoreDiv = $("#high-score-div");
+var highScoreList = $("#high-score-list");
+var backButton = $("#go-back");
 
 // Quiz Questions and Answers
 var quizData = {
@@ -40,6 +42,12 @@ var quizData = {
 var startQuiz = function(){
     // initialize remaining time to 75s/ 75000ms
     timeRemaining = 75000;
+
+    // reinitializing question to 0
+    questionNumber = 0;
+
+    $(answerListGroupEl).empty();
+    $(answerListGroupEl).show();
 
     // hide start quiz button
     $(startQuizBtnEl).hide();
@@ -151,6 +159,14 @@ var saveScores = function() {
     localStorage.setItem("highScores", JSON.stringify(highScores));
   };
 
+function loadScoresToList() {
+    for (var i = 0; i < highScores['playerName'].length; i++) {
+        var highScoreEl = $("<li></li>");
+        $(highScoreEl).text(highScores['playerName'][0]+" - "+['playerScore'][0]);
+        $(highScoreList).append(highScoreEl);
+    }
+}
+
 // view the saved high scores
 var viewHighScores = function(){
     $(questionHeaderEl).text("High Scores");
@@ -160,6 +176,8 @@ var viewHighScores = function(){
     $(resultsDivEl).hide();
     $(highScoreButtonsEl).show();
     $(scoreFormDivEl).hide();
+    $(highScoreDiv).show();
+    loadScoresToList();
 
 }
 
@@ -170,6 +188,7 @@ $(startQuizBtnEl).on("click", function(){
 
 // view the saved high scores when the 
 $(viewHighScoresEl).on("click", function(){
+    $(highScoreList).empty();
     viewHighScores();
 })
 
@@ -182,6 +201,22 @@ $(submitButtonEl).on("click", function(){
 
 $(clearScoresBtn).on("click", function(){
     localStorage.clear();
+    highScoreDiv.hide();
+    $(highScoreList).empty();
+    highScores = {
+        playerName: [],
+        playerScore: []
+      }
+})
+
+$(backButton).on("click", function(){
+    $(questionHeaderEl).text("Coding Quiz Challenge").addClass("text-center");
+    $(quizDescriptionEl).show().text("welcome to da quiz");
+    $(startQuizBtnEl).show();
+    $(resultsDivEl).hide();
+    $(highScoreButtonsEl).hide();
+    $(highScoreDiv).hide();
+
 })
 
 loadScores();
