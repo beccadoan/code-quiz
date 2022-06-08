@@ -123,6 +123,8 @@ var startQuiz = function(){
 
         // check the answer element chosen against the correct answer in the quiz date
         // if it's correct, display 'correct'
+        console.log(parseInt($(element).attr('id').replace("answer-","")))
+        console.log(questionNumber);
         if (parseInt($(element).attr('id').replace("answer-","")) === quizData.correctAnswers[questionNumber]){
             $(resultSpanEl).text("Correct");
         // if the answer is incorrect, display 'wrong' and subtract 20s from the timer
@@ -160,9 +162,11 @@ var saveScores = function() {
   };
 
 function loadScoresToList() {
+    $(highScoreList).empty();
+    loadScores();
     for (var i = 0; i < highScores['playerName'].length; i++) {
         var highScoreEl = $("<li></li>");
-        $(highScoreEl).text(highScores['playerName'][0]+" - "+['playerScore'][0]);
+        $(highScoreEl).text(highScores['playerName'][i]+" - "+highScores['playerScore'][i]);
         $(highScoreList).append(highScoreEl);
     }
 }
@@ -177,6 +181,7 @@ var viewHighScores = function(){
     $(highScoreButtonsEl).show();
     $(scoreFormDivEl).hide();
     $(highScoreDiv).show();
+    $(highScoreList).show();
     loadScoresToList();
 
 }
@@ -188,7 +193,6 @@ $(startQuizBtnEl).on("click", function(){
 
 // view the saved high scores when the 
 $(viewHighScoresEl).on("click", function(){
-    $(highScoreList).empty();
     viewHighScores();
 })
 
@@ -210,13 +214,8 @@ $(clearScoresBtn).on("click", function(){
 })
 
 $(backButton).on("click", function(){
-    $(questionHeaderEl).text("Coding Quiz Challenge").addClass("text-center");
-    $(quizDescriptionEl).show().text("welcome to da quiz");
-    $(startQuizBtnEl).show();
-    $(resultsDivEl).hide();
-    $(highScoreButtonsEl).hide();
-    $(highScoreDiv).hide();
-
+    // reload browser to restart quiz
+    location.reload();
 })
 
 loadScores();
