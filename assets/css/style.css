@@ -52,7 +52,7 @@ li {
     font-family: cursive;
 }
 
-#score-form, #result-div {
+#score-form-div, #result-div {
     display: none;
 }
 

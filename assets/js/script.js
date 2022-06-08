@@ -12,8 +12,9 @@ var quizDescriptionEl = $("#quiz-description");
 var questionHeaderEl = $("#question-here");
 var mainContentEl = $("#main-content");
 var viewHighScoresEl = $("#view-scores");
-var scoreFormEl = $("#score-form");
-var answerListGroupEl = $("#answers-here")
+var scoreFormDivEl = $("#score-form-div");
+var answerListGroupEl = $("#answers-here");
+var submitButtonEl = $("#submit-btn");
 
 // Quiz Questions and Answers
 var quizData = {
@@ -103,10 +104,9 @@ var startQuiz = function(){
     }
 
     function rightOrWrong(element){
-        if(questionNumber === 0) {
-            // display element from hidden upon first answer
-            resultsDivEl.show();
-        }
+        // display element from hidden
+        resultsDivEl.show();
+
         // check the answer element chosen against the correct answer in the quiz date
         // if it's correct, display 'correct'
         if (parseInt($(element).attr('id').replace("answer-","")) === quizData.correctAnswers[questionNumber]){
@@ -119,10 +119,16 @@ var startQuiz = function(){
     }
     // displays score and let's user input info to save
     function displayResults() {
-        console.log("You did so good!!");
+        $(answerListGroupEl).hide();
+        $(scoreFormDivEl).show();
+        $(questionHeaderEl).text("All Done!")
+        $(quizDescriptionEl).text("Your final score is "+(timeRemaining/1000).toString()).show();
+        clearInterval(myVar);
+
     }
 }
 
+// view the saved high scores
 var viewHighScores = function(){
     console.log("view high scores here");
 }
@@ -132,7 +138,11 @@ $(startQuizBtnEl).on("click", function(){
     startQuiz();
 })
 
+// view the saved high scores when the 
 $(viewHighScoresEl).on("click", function(){
     viewHighScores();
 })
 
+$(submitButtonEl).on("click", function(){
+    console.log("my function logs!");
+})
